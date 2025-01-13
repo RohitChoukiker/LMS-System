@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { register } from '../../../api/authService';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -69,12 +70,24 @@ function Signup() {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      // Handle form submission here
+      try {
+        const response = await register(formData);
+        // Handle successful registration
+        console.log('Registration successful:', response);
+        // You might want to redirect to login page or handle the response accordingly
+      } catch (error) {
+        // Handle registration error
+        console.error('Registration failed:', error);
+        setErrors(prev => ({
+          ...prev,
+          email: error.message || 'Registration failed. Please try again.'
+        }));
+      }
     }
+
   };
 
   return (
@@ -144,7 +157,32 @@ function Signup() {
             {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
           </div>
 
-         
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={`w-full pl-10 pr-12 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
+                  errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                }`}
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
+            )}
+          </div>
 
           <button
             type="submit"
