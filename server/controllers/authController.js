@@ -37,11 +37,15 @@ const createSendToken = (user, statusCode, res) => {
     });
 };
 
-exports.signup = catchAsync(async (req, res) => {
-    console.log(req.body);
+exports.signup = catchAsync(async (req, res, next) => {
+    // Check if user with this email already exists
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+        return next(new AppError('Email already in use. Please use a different email address.', 400));
+    }
 
     const newUser = await User.create(req.body);
-
+    
     // createSendToken(newUser, 201, res);
     res.status(201).json({
         status: 'success',
@@ -49,8 +53,6 @@ exports.signup = catchAsync(async (req, res) => {
             user: newUser
         }
     });
-
-    createSendToken(newUser, 201, res);  // Re-enable this instead of sending raw user data
 });
 
 exports.login = catchAsync(async (req, res, next) => {
