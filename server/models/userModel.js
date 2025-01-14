@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please provide a valid email'],
     unique: true
   },
+
+  role: {
+    type: String
+  },
+
   password: {
     type: String,
     required: true,

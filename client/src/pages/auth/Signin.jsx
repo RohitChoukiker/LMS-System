@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import {login} from "./../../../api/services/authService"
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 
 
@@ -17,6 +17,14 @@ function Signin() {
     email: '',
     password: ''
   });
+  const { login, error: authError, loading: authLoading } = useAuth();
+
+  // useEffect(() => {
+  //   // Redirect if user is authenticated
+  //   if (isAuthenticated) {
+  //     navigate('/test');
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,18 +66,14 @@ function Signin() {
     e.preventDefault();
     if (!validateForm()) return;
     
-    setLoading(true);
     try {
-      const response = await login(formData);
-      console.log('Login successful:', response);
+      await login(formData);
+      navigate('/test');
     } catch (error) {
-      console.error('Login error full details:', error);
       setErrors({
-        email: 'Login failed. Please check your credentials.',
+        email: error.message || 'Login failed. Please check your credentials.',
         password: ''
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -142,10 +146,10 @@ function Signin() {
 
           <button
             type="submit" 
-            disabled={loading}
+            disabled={authLoading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-colors font-medium"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {authLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 

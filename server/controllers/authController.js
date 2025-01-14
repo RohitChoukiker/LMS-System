@@ -29,24 +29,24 @@ const createSendToken = (user, statusCode, res) => {
 
 
     // Set cookie
-    res.cookie('jwt', token, cookieOptions);
 
     res.status(statusCode).json({
         status: 'success',
-        token
+        data: {
+            user: user,
+            token: token
+        }   
     });
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-    // Check if user with this email already exists
     const existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
         return next(new AppError('Email already in use. Please use a different email address.', 400));
     }
 
     const newUser = await User.create(req.body);
-    
-    // createSendToken(newUser, 201, res);
+
     res.status(201).json({
         status: 'success',
         data: {
@@ -69,6 +69,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 
 });
+
 
 exports.logout = catchAsync(async (req, res, next) => {
     res.clearCookie('jwt');

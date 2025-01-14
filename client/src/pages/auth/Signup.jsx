@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerService } from "../../../api/services/authService";
 
-import {register} from "./../../../api/services/authService"
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'user'
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,8 @@ function Signup() {
     password: '',
     confirmPassword: ''
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,25 +77,22 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setLoading(true);
     if (validateForm()) {
+      setLoading(true);
       try {
-        const response = await register(formData);
-        setLoading(false);
-        // Handle successful registration
+        const response = await registerService(formData);
         console.log('Registration successful:', response);
-        // You might want to redirect to login page or handle the response accordingly
+        // Redirect to login page after successful registration
+        navigate('/login');
       } catch (error) {
-        // Handle registration error
-        console.error('Registration failed:', error);
         setErrors(prev => ({
           ...prev,
-          email: error.message || 'Registration failed. Please try again.'
+          email: error.response?.data?.message || 'Registration failed. Please try again.'
         }));
+      } finally {
+        setLoading(false);
       }
     }
-
   };
 
   return (
@@ -199,9 +200,9 @@ function Signup() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+          <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
             Sign in
-          </a>
+          </Link>
         </p>
       </div>
     </div>
