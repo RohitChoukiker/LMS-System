@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/authcontext/index';
 
-function PrivateRoute({ children }) {
+function ProtectedRoute({ children }) {
     const { user, loading } = useAuth();
 
     if (loading) {

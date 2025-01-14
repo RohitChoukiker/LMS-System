@@ -10,6 +10,7 @@ function Signup() {
     confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({
     name: '',
@@ -73,10 +74,11 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+    setLoading(true);
     if (validateForm()) {
       try {
         const response = await register(formData);
-        
+        setLoading(false);
         // Handle successful registration
         console.log('Registration successful:', response);
         // You might want to redirect to login page or handle the response accordingly

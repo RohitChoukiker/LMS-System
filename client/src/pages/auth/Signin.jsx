@@ -10,6 +10,7 @@ function Signin() {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     email: '',
     password: ''
@@ -53,6 +54,9 @@ function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+    
+    setLoading(true);
     try {
       const response = await login(formData);
       console.log('Login successful:', response);
@@ -62,6 +66,8 @@ function Signin() {
         email: 'Login failed. Please check your credentials.',
         password: ''
       });
+    } finally {
+      setLoading(false);
     }
   };
 
