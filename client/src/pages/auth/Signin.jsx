@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import {login} from "./../../../api/services/authService"
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -9,6 +10,7 @@ function Signin() {
     email: '',
     password: ''
   });
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
@@ -149,7 +151,7 @@ function Signin() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Don't have an account?{' '}
-          <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+          <a href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
             Sign up
           </a>
         </p>
