@@ -82,8 +82,7 @@ function Signup() {
       try {
         const response = await registerService(formData);
         console.log('Registration successful:', response);
-        // Redirect to login page after successful registration
-        navigate('/login');
+        
       } catch (error) {
         setErrors(prev => ({
           ...prev,

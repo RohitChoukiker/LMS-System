@@ -2,13 +2,13 @@
 
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { login as loginService, logout as logoutService,} from './../../api/services/authService';
+import { loginService, logoutService } from './../../api/services/authService';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const data = await loginService(credentials);
+
     setUser(data);
+    // setLoading(false);
+    localStorage.setItem('token', data.token);
     setIsAuthenticated(true);
   };
 
@@ -32,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, }}>
       {children}
     </AuthContext.Provider>
   );

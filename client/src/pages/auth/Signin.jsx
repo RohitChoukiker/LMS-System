@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-
-
 
 function Signin() {
   const [formData, setFormData] = useState({
@@ -12,19 +10,11 @@ function Signin() {
   });
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     email: '',
     password: ''
   });
-  const { login, error: authError, loading: authLoading } = useAuth();
-
-  // useEffect(() => {
-  //   // Redirect if user is authenticated
-  //   if (isAuthenticated) {
-  //     navigate('/test');
-  //   }
-  // }, [isAuthenticated, navigate]);
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,20 +55,27 @@ function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    
+
     try {
       await login(formData);
-      navigate('/test');
+      navigate('/');
     } catch (error) {
-      setErrors({
-        email: error.message || 'Login failed. Please check your credentials.',
-        password: ''
-      });
+      if (error.message === 'Email already exists') {
+        setErrors({
+          email: 'This email is already registered.',
+          password: ''
+        });
+      } else {
+        setErrors({
+          email: 'Login failed. Please check your credentials.',
+          password: ''
+        });
+      }
     }
   };
 
   return (
-    <div className=" flex items-center justify-center p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-8">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-8">Welcome Back</h1>
         
@@ -133,23 +130,11 @@ function Signin() {
             {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
           </div>
 
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="remember"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-              Remember me
-            </label>
-          </div>
-
           <button
-            type="submit" 
-            disabled={authLoading}
+            type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-colors font-medium"
           >
-            {authLoading ? 'Signing in...' : 'Sign In'}
+            Sign In
           </button>
         </form>
 

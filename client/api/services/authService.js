@@ -1,6 +1,4 @@
 
-
-
 import axiosInstance from "../axiosIntance";
 
 // User registration service
@@ -13,7 +11,7 @@ export const registerService = async (formdata) => {
 };
 
 // User login service
-export const login = async (credentials) => {
+export const loginService = async (credentials) => {
     const response = await axiosInstance.post('/auth/login', credentials);
     if (response.data.token) {
         localStorage.setItem('token', response.data.token); // Store token in localStorage
@@ -22,7 +20,7 @@ export const login = async (credentials) => {
 };
 
 // User logout service
-export const logout = () => {
+export const logoutService = () => {
     localStorage.removeItem('token'); // Remove token from localStorage
 };
 
