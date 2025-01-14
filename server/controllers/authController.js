@@ -30,11 +30,13 @@ const createSendToken = (user, statusCode, res) => {
 
     // Set cookie
 
+    res.cookie('jwt', token, cookieOptions);
+
     res.status(statusCode).json({
         status: 'success',
+        token,
         data: {
-            user: user,
-            token: token
+            user
         }   
     });
 };
@@ -46,13 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     }
 
     const newUser = await User.create(req.body);
-
-    res.status(201).json({
-        status: 'success',
-        data: {
-            user: newUser
-        }
-    });
+    createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {

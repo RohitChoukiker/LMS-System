@@ -12,8 +12,8 @@ function App() {
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/" element={<AuthPage />} />
-                {/* <Route path="/auth" element={<AuthPage />} /> */}
+                <Route path="/" element={<Home />} />
+                <Route path="/auth" element={<AuthPage />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route 

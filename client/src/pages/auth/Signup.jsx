@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerService } from "../../../api/services/authService";
-
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
@@ -82,7 +81,7 @@ function Signup() {
       try {
         const response = await registerService(formData);
         console.log('Registration successful:', response);
-        
+        navigate("/login");
       } catch (error) {
         setErrors(prev => ({
           ...prev,
