@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import {login} from "./../../../api/services/authService"
 
 function Signin() {
   const [formData, setFormData] = useState({
@@ -48,12 +49,15 @@ function Signin() {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log('Form submitted:', formData);
-      // Handle login submission here
+    try {
+      const response = await login(formData);
+      console.log('Login successful:', response);
+    } catch (error) {
+      console.error('Login failed:', error);
     }
+    console.log(formData);
   };
 
   return (

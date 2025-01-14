@@ -1,5 +1,4 @@
-import axiosInstance from "./axiosIntance";
-
+import axiosInstance from "../axiosIntance";
 
 export const register = async (user) => {
     const response = await axiosInstance.post('/auth/register', user);
@@ -9,7 +8,7 @@ export const register = async (user) => {
 export const login = async (email, password) => {
     try{
         const response = await axiosInstance.post('/auth/login', {email, password});    
-        localStorage.setItem('token', response.data.token);
+        // localStorage.setItem('token', response.data.token);
         return response.data;
     } catch (error) {
         console.log(error);

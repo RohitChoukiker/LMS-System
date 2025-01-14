@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { register } from '../../../api/authService';
 
+import {register} from "./../../../api/services/authService"
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
