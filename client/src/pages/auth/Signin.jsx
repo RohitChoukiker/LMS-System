@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import {login} from "./../../../api/services/authService"
 
+
+
 function Signin() {
   const [formData, setFormData] = useState({
     email: '',
@@ -55,9 +57,12 @@ function Signin() {
       const response = await login(formData);
       console.log('Login successful:', response);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Login error full details:', error);
+      setErrors({
+        email: 'Login failed. Please check your credentials.',
+        password: ''
+      });
     }
-    console.log(formData);
   };
 
   return (
@@ -75,6 +80,7 @@ function Signin() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                required
                 className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -98,6 +104,7 @@ function Signin() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                required
                 className={`w-full pl-10 pr-12 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
                   errors.password ? 'border-red-500' : 'border-gray-300'
                 }`}

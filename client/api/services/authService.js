@@ -5,14 +5,13 @@ export const register = async (user) => {
     return response.data;
 }
 
-export const login = async (email, password) => {
+export const login = async (loginData) => {
     try{
-        const response = await axiosInstance.post('/auth/login', {email, password});    
-        // localStorage.setItem('token', response.data.token);
+        const response = await axiosInstance.post('/auth/login', loginData);
         return response.data;
     } catch (error) {
         console.log(error);
-        throw error;    
+        throw error;
     }
 }
 
