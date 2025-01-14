@@ -1,20 +1,22 @@
 import axiosInstance from "../axiosIntance";
 
-export const register = async (user) => {
-    const response = await axiosInstance.post('/auth/register', user);
-    return response.data;
-}
 
-export const login = async (loginData) => {
-    try{
-        const response = await axiosInstance.post('/auth/login', loginData);
+
+
+export const authAPI = {
+    signup: async (userData) => {
+        const response = await axiosInstance.post('/auth/register', userData);
         return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
+    },
+    signin: async (credentials) => {
+        const response = await axiosInstance.post('/auth/login', credentials);
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token);
+        }
+        return response.data;
+    },
+   
+    logout: async () => {
+        localStorage.removeItem('token');
     }
-}
-
-export const logout = async () => {
-    localStorage.removeItem('token');
 }

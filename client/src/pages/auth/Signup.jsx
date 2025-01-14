@@ -76,6 +76,7 @@ function Signup() {
     if (validateForm()) {
       try {
         const response = await register(formData);
+        
         // Handle successful registration
         console.log('Registration successful:', response);
         // You might want to redirect to login page or handle the response accordingly
@@ -187,9 +188,10 @@ function Signup() {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-colors font-medium"
           >
-            Register
+            {loading ? 'Signing up...' : 'Sign Up'}
           </button>
         </form>
 

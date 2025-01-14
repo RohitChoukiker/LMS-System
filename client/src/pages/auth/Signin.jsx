@@ -133,10 +133,11 @@ function Signin() {
           </div>
 
           <button
-            type="submit"
+            type="submit" 
+            disabled={loading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-colors font-medium"
           >
-            Sign in
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 

@@ -1,12 +1,32 @@
-import { Button } from "./components/ui/button"
-import {Route, Routes } from 'react-router-dom';
-import AuthPage from "./pages/auth";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/authcontext/index';
+import ProtectedRoute from './components/protectedRoutes';
+import SignUp from './pages/auth/Signup';
+import SignIn from './pages/auth/Signin';
+import Home from './pages/Home';
 
-export default function App() {
-  return (
-    <Routes>
-      <Route path="/auth" element={<AuthPage />} />
-    </Routes>
-  )
+
+function App() {
+    return (
+        <Router>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route 
+                        path="/dashboard" 
+                        element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    
+                </Routes>
+            </AuthProvider>
+        </Router>
+    );
 }
 
+export default App; 
