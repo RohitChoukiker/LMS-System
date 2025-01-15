@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerService } from "../../../api/services/authService";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+
+
+
 function Signup() {
   const [formData, setFormData] = useState({
     name: '',
@@ -147,7 +152,7 @@ function Signup() {
                 className={`w-full pl-10 pr-12 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
                   errors.password ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="••••••••"
+                placeholder="Your Password"
               />
               <button
                 type="button"
@@ -172,7 +177,7 @@ function Signup() {
                 className={`w-full pl-10 pr-12 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
                   errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="••••••••"
+                placeholder="Your Password"
               />
               <button
                 type="button"
@@ -186,6 +191,20 @@ function Signup() {
               <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
             )}
           </div>
+
+          <RadioGroup defaultValue="comfortable">
+      <div className="flex flex-row justify-evenly">
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="default" id="r1" />
+        <Label htmlFor="r1">Student</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="comfortable" id="r2" />
+        <Label htmlFor="r2">Instructor</Label>
+      </div>
+      </div>
+      
+    </RadioGroup>
 
           <button
             type="submit"

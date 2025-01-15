@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import SignUp from './pages/auth/Signup';
 import SignIn from './pages/auth/Signin';
-import Home from './pages/Home';
+// import Home from './pages/Home';
 import AuthPage from './pages/auth';
 import Error404 from './pages/Error404';
 import Test from './pages/test';
@@ -12,8 +12,8 @@ function App() {
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/auth" element={<AuthPage />} />
+                {/* <Route path="/" element={<Home />} /> */}
+                <Route path="/" element={<AuthPage />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route 

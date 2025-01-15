@@ -36,28 +36,34 @@ const createSendToken = (user, statusCode, res) => {
         status: 'success',
         token,
         data: {
-            user
+            user,
+            role: user.role
         }   
     });
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-    const existingUser = await User.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ 
+        email: req.body.email, 
+        role: req.body.role 
+    });
+
     if (existingUser) {
-        return next(new AppError('Email already in use. Please use a different email address.', 400));
+        return next(new AppError('User already exists with this email and role.', 400));
     }
 
+    // नया यूजर बनाएं
     const newUser = await User.create(req.body);
     createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email }).select('+password');
+    const { email, password, role } = req.body;
+    const user = await User.findOne({ email, role }).select('+password');
 
 
-    if (!user || !(await user.correctPassword(password, user.password))) {
-        return next(new AppError('Invalid email or password', 401));
+    if (!user || !(await user.correctPassword(password, user.password)) || user.role !== role) {
+        return next(new AppError('Invalid email or password or role', 401));
     }
 
     createSendToken(user, 200, res);

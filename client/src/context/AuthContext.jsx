@@ -13,9 +13,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          // You should add a verifyToken service to validate token with backend
           setIsAuthenticated(true);
-          // Set user data if available
         }
       } catch (error) {
         localStorage.removeItem('token');
@@ -30,18 +28,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const data = await loginService(credentials);
+      const response = await loginService(credentials);
       
-      if (!data || !data.token) {
+      if (!response || !response.token) {
         throw new Error('Token not received from server');
       }
 
-      localStorage.setItem('token', data.token);
-      setUser(data.user || data); // Store user data depending on your API response structure
+      localStorage.setItem('token', response.token);
+      setUser(response.user || response); // Store user data depending on your API response structure
       setIsAuthenticated(true);
-      console.log('Stored token:', data.token);
+      
+      console.log('Stored token:', response.token);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login error:', error.response.data);
       setIsAuthenticated(false);
       throw error;
     }
