@@ -4,8 +4,9 @@ import { loginService, logoutService } from './../../api/services/authService';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -29,15 +30,15 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await loginService(credentials);
-      
+
       if (!response || !response.token) {
         throw new Error('Token not received from server');
       }
 
       localStorage.setItem('token', response.token);
-      setUser(response.user || response); // Store user data depending on your API response structure
+      setRole(response.user || response); // Store user data depending on your API response structure
       setIsAuthenticated(true);
-      
+
       console.log('Stored token:', response.token);
     } catch (error) {
       console.error('Login error:', error.response.data);
@@ -49,12 +50,12 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     logoutService();
     localStorage.removeItem('token');
-    setUser(null);
+    setRole(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
+    <AuthContext.Provider value={{ role, isAuthenticated, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

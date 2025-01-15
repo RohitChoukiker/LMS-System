@@ -8,18 +8,22 @@ import { Label } from "@/components/ui/label"
 function Signin() {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    role: ''
   });
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({
     email: '',
-    password: ''
+    password: '',
+    role: ''
   });
   const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -34,7 +38,8 @@ function Signin() {
     let isValid = true;
     const newErrors = {
       email: '',
-      password: ''
+      password: '',
+      role: ''
     };
 
     if (!formData.email.trim()) {
@@ -56,6 +61,7 @@ function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+      console.log(formData);
     if (!validateForm()) return;
 
     try {
@@ -65,12 +71,14 @@ function Signin() {
       if (error.message === 'Email already exists') {
         setErrors({
           email: 'This email is already registered.',
-          password: ''
+          password: '',
+          role: ''
         });
       } else {
         setErrors({
           email: 'Login failed. Please check your credentials.',
-          password: ''
+          password: '',
+          role: ''
         });
       }
     }
@@ -130,19 +138,22 @@ function Signin() {
             {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
           </div>
 
-          <RadioGroup defaultValue="comfortable">
-      <div className="flex flex-row justify-evenly">
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="default" id="r1" />
-        <Label htmlFor="r1">Student</Label>
-      </div>
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="comfortable" id="r2" />
-        <Label htmlFor="r2">Instructor</Label>
-      </div>
-      </div>
-      
-    </RadioGroup>
+          <RadioGroup 
+            defaultValue="student" 
+            value={formData.role}
+            onValueChange={(value) => setFormData(prev => ({...prev, role: value}))}
+          >
+            <div className="flex flex-row justify-evenly">
+              <div className="flex items-center space-x-2 ">
+                <RadioGroupItem className="text-blue-600" value="student" id="r1" />
+                <Label htmlFor="r1">Student</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem className="text-blue-600" value="instructor" id="r2" />
+                <Label htmlFor="r2">Instructor</Label>
+              </div>
+            </div>
+          </RadioGroup>
 
           <button
             type="submit"

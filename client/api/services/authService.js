@@ -4,8 +4,8 @@ import axiosInstance from "../axiosIntance";
 // User registration service
 export const registerService = async (formdata) => {
     const response = await axiosInstance.post('/auth/register', {
-        ...formdata,
-        role: 'user', // Default role is user
+        ...formdata 
+        // Default role is user
     });
     return response.data;
 };
