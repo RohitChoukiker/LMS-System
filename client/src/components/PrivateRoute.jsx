@@ -18,11 +18,11 @@ function PrivateRoute({ children }) {
 
 
   // Role based routing
-  if (role === 'instructor') {
+  if (role === 'instructor' || location.pathname.includes('/instructor')) {
     if (!location.pathname.includes('/instructor')) {
       return <Navigate to="/instructor" />;
     }
-  } else if (role === 'student') {
+  } else if (role === 'student' || location.pathname.includes('/student')) {
     if (!location.pathname.includes('/student')) {
       return <Navigate to="/student" />;
     }
